@@ -1,15 +1,10 @@
-from django.db.migrations import serializer
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import get_object_or_404
 from django_filters.utils import translate_validation
-from djoser.views import UserViewSet
-from rest_framework import status
-from rest_framework.decorators import action, api_view, permission_classes
+from rest_framework.decorators import api_view, permission_classes
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.viewsets import ModelViewSet
 from django_filters.rest_framework import DjangoFilterBackend
-from rest_framework import status
-from rest_framework.response import Response
 
 from .filters import PostFilter
 from .permissions import IsAuthorOrAdminOrReadOnly
@@ -32,16 +27,6 @@ class PostViewSet(ModelViewSet):
     def perform_create(self, serializer):
         serializer.save(author=self.request.user)
 
-    @action(
-        detail=False,
-        methods=('get',),
-        permission_classes=(IsAuthenticated,),
-    )
-    def myposts(self, request):
-        queryset = self.filter_queryset(request.user.posts.all())
-        serializer = PostSerializer(queryset, many=True)
-        return Response(serializer.data)
-
 
 @api_view(['GET'])
 @permission_classes((IsAuthenticated,))
@@ -56,7 +41,6 @@ def myposts(request):
     queryset = paginator.paginate_queryset(filterset.qs, request)
     serializer = PostSerializer(queryset, many=True)
     return paginator.get_paginated_response(serializer.data)
-
 
 
 class CommentViewSet(ModelViewSet):
