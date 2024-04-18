@@ -2,11 +2,13 @@ from django.contrib import admin
 
 from .models import Post, Comment
 
+
 class CommentsInline(admin.TabularInline):
     model = Comment
     extra = 0
     fields = ('id', 'text', 'author')
     readonly_fields = ('id', 'text', 'author')
+
 
 @admin.register(Post)
 class PostAdmin(admin.ModelAdmin):
@@ -18,4 +20,3 @@ class PostAdmin(admin.ModelAdmin):
 @admin.register(Comment)
 class CommentAdmin(admin.ModelAdmin):
     list_display = ('id', 'text', 'author')
-
