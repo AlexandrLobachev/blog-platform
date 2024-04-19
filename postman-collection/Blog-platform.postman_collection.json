@@ -1,0 +1,2829 @@
+{
+	"info": {
+		"_postman_id": "3894fd2c-6b48-4098-aac1-6397b481a908",
+		"name": "Blog-platform",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "31278634"
+	},
+	"item": [
+		{
+			"name": "register_and_get_tokens // No Auth",
+			"item": [
+				{
+					"name": "create_users",
+					"item": [
+						{
+							"name": "create_first_user",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"const responseData = pm.response.json();",
+											"",
+											"pm.test(\"Статус-код ответа должен быть 201\", function () {",
+											"    pm.expect(pm.response.status).to.be.eql(\"Created\");",
+											"    const userId = _.get(responseData, \"id\");",
+											"    if (userId) {",
+											"        pm.collectionVariables.set(\"userId\", userId);",
+											"    }",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "noauth"
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"email\": {{email}},\n    \"username\": {{username}},\n    \"password\": {{password}}\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/api/users/",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"users",
+										""
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "create_second_user",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"const responseData = pm.response.json();",
+											"",
+											"pm.test(\"Статус-код ответа должен быть 201\", function () {",
+											"    pm.expect(pm.response.status).to.be.eql(\"Created\");",
+											"    const userId = _.get(responseData, \"id\");",
+											"    if (userId) {",
+											"        pm.collectionVariables.set(\"secondUserId\", userId);",
+											"    }",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "noauth"
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"email\": {{secondUserEmail}},\n    \"username\": {{secondUserUsername}},\n    \"password\": {{password}}\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/api/users/",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"users",
+										""
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "create_third_user",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"const responseData = pm.response.json();",
+											"",
+											"pm.test(\"Статус-код ответа должен быть 201\", function () {",
+											"    pm.expect(pm.response.status).to.be.eql(\"Created\");",
+											"    const userId = _.get(responseData, \"id\");",
+											"    if (userId) {",
+											"        pm.collectionVariables.set(\"thirdUserId\", userId);",
+											"    }",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "noauth"
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"email\": {{thirdUserEmail}},\n    \"username\": {{thirdUserUsername}},\n    \"password\": {{password}}\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/api/users/",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"users",
+										""
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "get_tokens",
+					"item": [
+						{
+							"name": "get_token_for_first_user",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"const responseData = pm.response.json();",
+											"const responseSchema = {",
+											"    \"type\": \"object\",",
+											"    \"properties\":{",
+											"        \"refresh\": {\"type\": \"string\"},",
+											"        \"access\": {\"type\": \"string\"},",
+											"    },",
+											"    \"required\": [\"refresh\", \"access\"],",
+											"    \"additionalProperties\": false",
+											"};",
+											"",
+											"pm.test(\"Статус-код ответа должен быть 200\", function () {",
+											"    pm.expect(",
+											"        pm.response.status,",
+											"        \"Убедитесь, что запроc на получение токена, содержащий корректные данные, возвращает ответ со статус-кодом 200\"",
+											"    ).to.be.eql(\"OK\");",
+											"});",
+											"pm.test('Структура ответа соответствует ожидаемой', function () {",
+											"    pm.response.to.have.jsonSchema(responseSchema);",
+											"    const auth_token = _.get(responseData, \"access\");",
+											"    if (auth_token) {",
+											"        pm.collectionVariables.set(\"userToken\", auth_token);",
+											"    }",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "noauth"
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"username\": {{username}},\n    \"password\": {{password}}\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/api/auth/jwt/create/",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"auth",
+										"jwt",
+										"create",
+										""
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "get_token_for_second_user",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"const responseData = pm.response.json();",
+											"const responseSchema = {",
+											"    \"type\": \"object\",",
+											"    \"properties\":{",
+											"        \"refresh\": {\"type\": \"string\"},",
+											"        \"access\": {\"type\": \"string\"},",
+											"    },",
+											"    \"required\": [\"refresh\", \"access\"],",
+											"    \"additionalProperties\": false",
+											"};",
+											"",
+											"pm.test(\"Статус-код ответа должен быть 200\", function () {",
+											"    pm.expect(",
+											"        pm.response.status,",
+											"        \"Убедитесь, что запроc на получение токена, содержащий корректные данные, возвращает ответ со статус-кодом 200\"",
+											"    ).to.be.eql(\"OK\");",
+											"});",
+											"pm.test('Структура ответа соответствует ожидаемой', function () {",
+											"    pm.response.to.have.jsonSchema(responseSchema);",
+											"    const auth_token = _.get(responseData, \"access\");",
+											"    if (auth_token) {",
+											"        pm.collectionVariables.set(\"secondUserToken\", auth_token);",
+											"    }",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "noauth"
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"username\": {{secondUserUsername}},\n    \"password\": {{password}}\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/api/auth/jwt/create/",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"auth",
+										"jwt",
+										"create",
+										""
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			],
+			"auth": {
+				"type": "noauth"
+			},
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "posts",
+			"item": [
+				{
+					"name": "create_posts",
+					"item": [
+						{
+							"name": "create_first_post",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"const responseData = pm.response.json();\r",
+											"\r",
+											"pm.test(\"Статус-код ответа должен быть 201\", function () {\r",
+											"    pm.expect(\r",
+											"        pm.response.status,\r",
+											"        \"Запрос зарегистрированного пользователя на создание поста, содержащий корректные данные, должен вернуть ответ со статус-кодом 201\"\r",
+											"    ).to.be.eql(\"Created\");\r",
+											"    const postId = _.get(responseData, \"id\");\r",
+											"    if (postId) {\r",
+											"        pm.collectionVariables.set(\"firstPostId\", postId);\r",
+											"    }\r",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"var dateNow = new Date();  \r",
+											"var currentDate = new Date(dateNow.setDate(dateNow.getDate())).toISOString().slice(0, 10);\r",
+											"\r",
+											"pm.collectionVariables.set(\"currentDate\", currentDate);"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{userToken}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"title\": \"Первый пост\",\r\n    \"text\": \"Опубликованный пост, виден всем.\",\r\n    \"pub_date\": \"{{currentDate}}\",\r\n    \"status\": \"published\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/api/posts/",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"posts",
+										""
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "create_second_post",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"const responseData = pm.response.json();\r",
+											"\r",
+											"pm.test(\"Статус-код ответа должен быть 201\", function () {\r",
+											"    pm.expect(\r",
+											"        pm.response.status,\r",
+											"        \"Запрос зарегистрированного пользователя на создание поста, содержащий корректные данные, должен вернуть ответ со статус-кодом 201\"\r",
+											"    ).to.be.eql(\"Created\");\r",
+											"    const postId = _.get(responseData, \"id\");\r",
+											"    if (postId) {\r",
+											"        pm.collectionVariables.set(\"secondPostId\", postId);\r",
+											"    }\r",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"var dateNow = new Date();  \r",
+											"var currentDate = new Date(dateNow.setDate(dateNow.getDate())).toISOString().slice(0, 10);\r",
+											"\r",
+											"pm.collectionVariables.set(\"currentDate\", currentDate);"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{userToken}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"title\": \"Черновик пост\",\r\n    \"text\": \"Черновик, виден только автору и админу.\",\r\n    \"pub_date\": \"{{currentDate}}\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/api/posts/",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"posts",
+										""
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "create_third_post",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"const responseData = pm.response.json();\r",
+											"\r",
+											"pm.test(\"Статус-код ответа должен быть 201\", function () {\r",
+											"    pm.expect(\r",
+											"        pm.response.status,\r",
+											"        \"Запрос зарегистрированного пользователя на создание поста, содержащий корректные данные, должен вернуть ответ со статус-кодом 201\"\r",
+											"    ).to.be.eql(\"Created\");\r",
+											"    const postId = _.get(responseData, \"id\");\r",
+											"    if (postId) {\r",
+											"        pm.collectionVariables.set(\"thirdPostId\", postId);\r",
+											"    }\r",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"var dateNow = new Date();  \r",
+											"var twoWeeksFutureDate = new Date(dateNow.setDate(dateNow.getDate() + 14)).toISOString().slice(0, 10);\r",
+											"\r",
+											"pm.collectionVariables.set(\"futureDate\", twoWeeksFutureDate);"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{userToken}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"title\": \"Пост из будущего\",\r\n    \"text\": \"Виден только автору и админу.\",\r\n    \"pub_date\": \"{{futureDate}}\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/api/posts/",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"posts",
+										""
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "create_four_post",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"const responseData = pm.response.json();\r",
+											"\r",
+											"pm.test(\"Статус-код ответа должен быть 201\", function () {\r",
+											"    pm.expect(\r",
+											"        pm.response.status,\r",
+											"        \"Запрос зарегистрированного пользователя на создание поста, содержащий корректные данные, должен вернуть ответ со статус-кодом 201\"\r",
+											"    ).to.be.eql(\"Created\");\r",
+											"    const postId = _.get(responseData, \"id\");\r",
+											"    if (postId) {\r",
+											"        pm.collectionVariables.set(\"fourPostId\", postId);\r",
+											"    }\r",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"var dateNow = new Date();  \r",
+											"var currentDate = new Date(dateNow.setDate(dateNow.getDate())).toISOString().slice(0, 10);\r",
+											"\r",
+											"pm.collectionVariables.set(\"currentDate\", currentDate);"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{secondUserToken}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"title\": \"Четверый пост\",\r\n    \"text\": \"Опубликованный пост, виден всем.\",\r\n    \"pub_date\": \"{{currentDate}}\",\r\n    \"status\": \"published\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/api/posts/",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"posts",
+										""
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "create_five_post",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"const responseData = pm.response.json();\r",
+											"\r",
+											"pm.test(\"Статус-код ответа должен быть 201\", function () {\r",
+											"    pm.expect(\r",
+											"        pm.response.status,\r",
+											"        \"Запрос зарегистрированного пользователя на создание поста, содержащий корректные данные, должен вернуть ответ со статус-кодом 201\"\r",
+											"    ).to.be.eql(\"Created\");\r",
+											"    const postId = _.get(responseData, \"id\");\r",
+											"    if (postId) {\r",
+											"        pm.collectionVariables.set(\"fivePostId\", postId);\r",
+											"    }\r",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"var dateNow = new Date();  \r",
+											"var currentDate = new Date(dateNow.setDate(dateNow.getDate())).toISOString().slice(0, 10);\r",
+											"\r",
+											"pm.collectionVariables.set(\"currentDate\", currentDate);"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{secondUserToken}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"title\": \"Пятый пост\",\r\n    \"text\": \"Опубликованный пост, виден всем.\",\r\n    \"pub_date\": \"{{currentDate}}\",\r\n    \"status\": \"published\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/api/posts/",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"posts",
+										""
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "create_six_post",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"const responseData = pm.response.json();\r",
+											"\r",
+											"pm.test(\"Статус-код ответа должен быть 201\", function () {\r",
+											"    pm.expect(\r",
+											"        pm.response.status,\r",
+											"        \"Запрос зарегистрированного пользователя на создание поста, содержащий корректные данные, должен вернуть ответ со статус-кодом 201\"\r",
+											"    ).to.be.eql(\"Created\");\r",
+											"    const postId = _.get(responseData, \"id\");\r",
+											"    if (postId) {\r",
+											"        pm.collectionVariables.set(\"sixPostId\", postId);\r",
+											"    }\r",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"var dateNow = new Date();  \r",
+											"var currentDate = new Date(dateNow.setDate(dateNow.getDate())).toISOString().slice(0, 10);\r",
+											"\r",
+											"pm.collectionVariables.set(\"currentDate\", currentDate);"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{secondUserToken}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"title\": \"Шестой пост\",\r\n    \"text\": \"Черновик, виден только user2.\",\r\n    \"pub_date\": \"{{currentDate}}\",\r\n    \"status\": \"draft\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/api/posts/",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"posts",
+										""
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "get_posts",
+					"item": [
+						{
+							"name": "get_posts_list // User",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Статус-код ответа должен быть 200\", function () {\r",
+											"    pm.expect(\r",
+											"        pm.response.status,\r",
+											"        \"Запрос зарегистрированного пользователя должен вернуть ответ со статус-кодом 200\"\r",
+											"    ).to.be.eql(\"OK\");\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Body matches string\", function () {\r",
+											"    pm.expect(pm.response.text()).to.include(pm.collectionVariables.get(\"firstPostId\"));\r",
+											"    pm.expect(pm.response.text()).to.include(pm.collectionVariables.get(\"secondPostId\"));\r",
+											"    pm.expect(pm.response.text()).to.include(pm.collectionVariables.get(\"thirdPostId\"));\r",
+											"    pm.expect(pm.response.text()).to.include(pm.collectionVariables.get(\"fourPostId\"));\r",
+											"    pm.expect(pm.response.text()).to.include(pm.collectionVariables.get(\"fivePostId\"));\r",
+											"    pm.expect(pm.response.text()).to.not.include(pm.collectionVariables.get(\"sixPostId\"));\r",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{userToken}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/api/posts/",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"posts",
+										""
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "get_posts_list // NO Auth",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Статус-код ответа должен быть 200\", function () {\r",
+											"    pm.expect(\r",
+											"        pm.response.status,\r",
+											"        \"Запрос анонимного пользователя должен вернуть ответ со статус-кодом 200\"\r",
+											"    ).to.be.eql(\"OK\");\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Body matches string\", function () {\r",
+											"    pm.expect(pm.response.text()).to.include(pm.collectionVariables.get(\"firstPostId\"));\r",
+											"    pm.expect(pm.response.text()).to.not.include(pm.collectionVariables.get(\"secondPostId\"));\r",
+											"    pm.expect(pm.response.text()).to.not.include(pm.collectionVariables.get(\"thirdPostId\"));\r",
+											"    pm.expect(pm.response.text()).to.include(pm.collectionVariables.get(\"fourPostId\"));\r",
+											"    pm.expect(pm.response.text()).to.include(pm.collectionVariables.get(\"fivePostId\"));\r",
+											"    pm.expect(pm.response.text()).to.not.include(pm.collectionVariables.get(\"sixPostId\"));\r",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/api/posts/",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"posts",
+										""
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "get_posts_detail // NO Auth",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Статус-код ответа должен быть 200\", function () {\r",
+											"    pm.expect(\r",
+											"        pm.response.status,\r",
+											"        \"Запрос анонимного пользователя должен вернуть ответ со статус-кодом 200\"\r",
+											"    ).to.be.eql(\"OK\");\r",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/api/posts/{{firstPostId}}",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"posts",
+										"{{firstPostId}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "get_user_posts_list",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Статус-код ответа должен быть 200\", function () {\r",
+											"    pm.expect(\r",
+											"        pm.response.status,\r",
+											"        \"Запрос зарегистрированного пользователя должен вернуть ответ со статус-кодом 200\"\r",
+											"    ).to.be.eql(\"OK\");\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Body matches string\", function () {\r",
+											"    pm.expect(pm.response.text()).to.include(pm.collectionVariables.get(\"firstPostId\"));\r",
+											"    pm.expect(pm.response.text()).to.include(pm.collectionVariables.get(\"secondPostId\"));\r",
+											"    pm.expect(pm.response.text()).to.include(pm.collectionVariables.get(\"thirdPostId\"));\r",
+											"    pm.expect(pm.response.text()).to.not.include(pm.collectionVariables.get(\"fourPostId\"));\r",
+											"    pm.expect(pm.response.text()).to.not.include(pm.collectionVariables.get(\"fivePostId\"));\r",
+											"    pm.expect(pm.response.text()).to.not.include(pm.collectionVariables.get(\"sixPostId\"));\r",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{userToken}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/api/myposts/",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"myposts",
+										""
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "get_user_posts_list_with_status",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Статус-код ответа должен быть 200\", function () {\r",
+											"    pm.expect(\r",
+											"        pm.response.status,\r",
+											"        \"Запрос зарегистрированного пользователя должен вернуть ответ со статус-кодом 200\"\r",
+											"    ).to.be.eql(\"OK\");\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Body matches string\", function () {\r",
+											"    pm.expect(pm.response.text()).to.include(pm.collectionVariables.get(\"firstPostId\"));\r",
+											"    pm.expect(pm.response.text()).to.not.include(pm.collectionVariables.get(\"secondPostId\"));\r",
+											"    pm.expect(pm.response.text()).to.not.include(pm.collectionVariables.get(\"thirdPostId\"));\r",
+											"    pm.expect(pm.response.text()).to.include(pm.collectionVariables.get(\"fourPostId\"));\r",
+											"    pm.expect(pm.response.text()).to.include(pm.collectionVariables.get(\"fivePostId\"));\r",
+											"    pm.expect(pm.response.text()).to.not.include(pm.collectionVariables.get(\"sixPostId\"));\r",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{secondUserToken}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/api/posts/?status=published",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"posts",
+										""
+									],
+									"query": [
+										{
+											"key": "status",
+											"value": "published"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "get_user_posts_list_with_date",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Статус-код ответа должен быть 200\", function () {\r",
+											"    pm.expect(\r",
+											"        pm.response.status,\r",
+											"        \"Запрос зарегистрированного пользователя должен вернуть ответ со статус-кодом 200\"\r",
+											"    ).to.be.eql(\"OK\");\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Body matches string\", function () {\r",
+											"    pm.expect(pm.response.text()).to.not.include(pm.collectionVariables.get(\"firstPostId\"));\r",
+											"    pm.expect(pm.response.text()).to.not.include(pm.collectionVariables.get(\"secondPostId\"));\r",
+											"    pm.expect(pm.response.text()).to.include(pm.collectionVariables.get(\"thirdPostId\"));\r",
+											"    pm.expect(pm.response.text()).to.not.include(pm.collectionVariables.get(\"fourPostId\"));\r",
+											"    pm.expect(pm.response.text()).to.not.include(pm.collectionVariables.get(\"fivePostId\"));\r",
+											"    pm.expect(pm.response.text()).to.not.include(pm.collectionVariables.get(\"sixPostId\"));\r",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{userToken}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/api/posts/?pub_date={{futureDate}}",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"posts",
+										""
+									],
+									"query": [
+										{
+											"key": "pub_date",
+											"value": "{{futureDate}}"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "get_user_posts_list_with_date_and_status",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Статус-код ответа должен быть 200\", function () {\r",
+											"    pm.expect(\r",
+											"        pm.response.status,\r",
+											"        \"Запрос зарегистрированного пользователя должен вернуть ответ со статус-кодом 200\"\r",
+											"    ).to.be.eql(\"OK\");\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Body matches string\", function () {\r",
+											"    pm.expect(pm.response.text()).to.not.include(pm.collectionVariables.get(\"firstPostId\"));\r",
+											"    pm.expect(pm.response.text()).to.include(pm.collectionVariables.get(\"secondPostId\"));\r",
+											"    pm.expect(pm.response.text()).to.not.include(pm.collectionVariables.get(\"thirdPostId\"));\r",
+											"    pm.expect(pm.response.text()).to.not.include(pm.collectionVariables.get(\"fourPostId\"));\r",
+											"    pm.expect(pm.response.text()).to.not.include(pm.collectionVariables.get(\"fivePostId\"));\r",
+											"    pm.expect(pm.response.text()).to.not.include(pm.collectionVariables.get(\"sixPostId\"));\r",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{userToken}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/api/posts/?pub_date={{currentDate}}&status=draft",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"posts",
+										""
+									],
+									"query": [
+										{
+											"key": "pub_date",
+											"value": "{{currentDate}}"
+										},
+										{
+											"key": "status",
+											"value": "draft"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "get_posts_detail // User",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Статус-код ответа должен быть 200\", function () {\r",
+											"    pm.expect(\r",
+											"        pm.response.status,\r",
+											"        \"Запрос зарегистрированного пользователя должен вернуть ответ со статус-кодом 200\"\r",
+											"    ).to.be.eql(\"OK\");\r",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{userToken}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/api/posts/{{firstPostId}}",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"posts",
+										"{{firstPostId}}"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "update_posts",
+					"item": [
+						{
+							"name": "update_post",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Статус-код ответа должен быть 200\", function () {",
+											"    pm.expect(",
+											"        pm.response.status,",
+											"        \"Запрос автора должен вернуть ответ со статус-кодом 200\"",
+											"    ).to.be.eql(\"OK\");",
+											"});",
+											"",
+											"pm.test(\"Body matches string\", function () {",
+											"    pm.expect(pm.response.text()).to.include(\"Изменен этот текст и статус.\");",
+											"    pm.expect(pm.response.text()).to.include(\"draft\");",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "noauth"
+								},
+								"method": "PATCH",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{userToken}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"title\": \"Первый пост\",\r\n    \"text\": \"Изменен этот текст и статус.\",\r\n    \"status\": \"draft\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/api/posts/{{firstPostId}}/",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"posts",
+										"{{firstPostId}}",
+										""
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "update_posts_bad_requests",
+					"item": [
+						{
+							"name": "update_post // No auth",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Статус-код ответа должен быть 401\", function () {",
+											"    pm.expect(",
+											"        pm.response.status,",
+											"        \"Запрос незарегистрированного пользователя должен вернуть ответ со статус-кодом 401\"",
+											"    ).to.be.eql(\"Unauthorized\");",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "noauth"
+								},
+								"method": "PATCH",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{userToken}}",
+										"type": "text",
+										"disabled": true
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"title\": \"Первый пост\",\r\n    \"text\": \"Изменен этот текст и статус.\",\r\n    \"status\": \"draft\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/api/posts/{{firstPostId}}/",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"posts",
+										"{{firstPostId}}",
+										""
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "update_post // Not author",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Статус-код ответа должен быть 403\", function () {",
+											"    pm.expect(",
+											"        pm.response.status,",
+											"        \"Запрос незарегистрированного пользователя должен вернуть ответ со статус-кодом 403\"",
+											"    ).to.be.eql(\"Forbidden\");",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "noauth"
+								},
+								"method": "PATCH",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{userToken}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"title\": \"Первый пост.\",\r\n    \"text\": \"Изменен этот текст и статус.\",\r\n    \"status\": \"draft\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/api/posts/{{fourPostId}}/",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"posts",
+										"{{fourPostId}}",
+										""
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "comments",
+			"item": [
+				{
+					"name": "create_comments",
+					"item": [
+						{
+							"name": "create_first_comment",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"const responseData = pm.response.json();\r",
+											"\r",
+											"pm.test(\"Статус-код ответа должен быть 201\", function () {\r",
+											"    pm.expect(\r",
+											"        pm.response.status,\r",
+											"        \"Запрос зарегистрированного пользователя на создание комментария, должен вернуть ответ со статус-кодом 201\"\r",
+											"    ).to.be.eql(\"Created\");\r",
+											"    const commentId = _.get(responseData, \"id\");\r",
+											"    if (commentId) {\r",
+											"        pm.collectionVariables.set(\"firstCommentId\", commentId);\r",
+											"    }\r",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"var dateNow = new Date();  \r",
+											"var currentDate = new Date(dateNow.setDate(dateNow.getDate())).toISOString().slice(0, 10);\r",
+											"\r",
+											"pm.collectionVariables.set(\"currentDate\", currentDate);"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{userToken}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"text\": \"Комментарий первого пользователя.\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/api/posts/{{fivePostId}}/comments/",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"posts",
+										"{{fivePostId}}",
+										"comments",
+										""
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "create_second_comment",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"const responseData = pm.response.json();\r",
+											"\r",
+											"pm.test(\"Статус-код ответа должен быть 201\", function () {\r",
+											"    pm.expect(\r",
+											"        pm.response.status,\r",
+											"        \"Запрос зарегистрированного пользователя на создание комментария, должен вернуть ответ со статус-кодом 201\"\r",
+											"    ).to.be.eql(\"Created\");\r",
+											"    const commentId = _.get(responseData, \"id\");\r",
+											"    if (commentId) {\r",
+											"        pm.collectionVariables.set(\"secondCommentId\", commentId);\r",
+											"    }\r",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"var dateNow = new Date();  \r",
+											"var currentDate = new Date(dateNow.setDate(dateNow.getDate())).toISOString().slice(0, 10);\r",
+											"\r",
+											"pm.collectionVariables.set(\"currentDate\", currentDate);"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{secondUserToken}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"text\": \"Комментарий второго пользователя.\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/api/posts/{{fivePostId}}/comments/",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"posts",
+										"{{fivePostId}}",
+										"comments",
+										""
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "get_comments",
+					"item": [
+						{
+							"name": "get_comments_list // User",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Статус-код ответа должен быть 200\", function () {\r",
+											"    pm.expect(\r",
+											"        pm.response.status,\r",
+											"        \"Запрос зарегистрированного пользователя должен вернуть ответ со статус-кодом 200\"\r",
+											"    ).to.be.eql(\"OK\");\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Body matches string\", function () {\r",
+											"    pm.expect(pm.response.text()).to.include(pm.collectionVariables.get(\"firstCommentId\"));\r",
+											"    pm.expect(pm.response.text()).to.include(pm.collectionVariables.get(\"secondCommentId\"));\r",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{userToken}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/api/posts/{{fivePostId}}/comments/",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"posts",
+										"{{fivePostId}}",
+										"comments",
+										""
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "get_comments_list // NO Auth",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Статус-код ответа должен быть 200\", function () {\r",
+											"    pm.expect(\r",
+											"        pm.response.status,\r",
+											"        \"Запрос анонимного пользователя должен вернуть ответ со статус-кодом 200\"\r",
+											"    ).to.be.eql(\"OK\");\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Body matches string\", function () {\r",
+											"    pm.expect(pm.response.text()).to.include(pm.collectionVariables.get(\"firstCommentId\"));\r",
+											"    pm.expect(pm.response.text()).to.include(pm.collectionVariables.get(\"secondCommentId\"));\r",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/api/posts/{{fivePostId}}/comments/",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"posts",
+										"{{fivePostId}}",
+										"comments",
+										""
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "update_comment",
+					"item": [
+						{
+							"name": "update_comment",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Статус-код ответа должен быть 200\", function () {",
+											"    pm.expect(",
+											"        pm.response.status,",
+											"        \"Запрос автора должен вернуть ответ со статус-кодом 200\"",
+											"    ).to.be.eql(\"OK\");",
+											"});",
+											"",
+											"pm.test(\"Body matches string\", function () {",
+											"    pm.expect(pm.response.text()).to.include(\"Изменен текст комментария.\");",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "noauth"
+								},
+								"method": "PATCH",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{userToken}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"text\": \"Изменен текст комментария.\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/api/posts/{{fivePostId}}/comments/{{firstCommentId}}/",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"posts",
+										"{{fivePostId}}",
+										"comments",
+										"{{firstCommentId}}",
+										""
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "update_comment_bad_requests",
+					"item": [
+						{
+							"name": "update_comment // No auth",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Статус-код ответа должен быть 401\", function () {",
+											"    pm.expect(",
+											"        pm.response.status,",
+											"        \"Запрос незарегистрированного пользователя должен вернуть ответ со статус-кодом 401\"",
+											"    ).to.be.eql(\"Unauthorized\");",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "noauth"
+								},
+								"method": "PATCH",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{userToken}}",
+										"type": "text",
+										"disabled": true
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"title\": \"Первый пост\",\r\n    \"text\": \"Изменен этот текст и статус.\",\r\n    \"status\": \"draft\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/api/posts/{{fivePostId}}/comments/{{firstCommentId}}/",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"posts",
+										"{{fivePostId}}",
+										"comments",
+										"{{firstCommentId}}",
+										""
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "update_comment // Not author",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Статус-код ответа должен быть 403\", function () {",
+											"    pm.expect(",
+											"        pm.response.status,",
+											"        \"Запрос незарегистрированного пользователя должен вернуть ответ со статус-кодом 403\"",
+											"    ).to.be.eql(\"Forbidden\");",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "noauth"
+								},
+								"method": "PATCH",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{userToken}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"title\": \"Первый пост.\",\r\n    \"text\": \"Изменен этот текст и статус.\",\r\n    \"status\": \"draft\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/api/posts/{{fivePostId}}/comments/{{secondCommentId}}/",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"posts",
+										"{{fivePostId}}",
+										"comments",
+										"{{secondCommentId}}",
+										""
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "delete_requests",
+			"item": [
+				{
+					"name": "bad_requests",
+					"item": [
+						{
+							"name": "delete_post // No auth",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Статус-код ответа должен быть 401\", function () {",
+											"    pm.expect(",
+											"        pm.response.status,",
+											"        \"Запрос незарегистрированного пользователя должен вернуть ответ со статус-кодом 401\"",
+											"    ).to.be.eql(\"Unauthorized\");",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "noauth"
+								},
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{userToken}}",
+										"type": "text",
+										"disabled": true
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"title\": \"Первый пост\",\r\n    \"text\": \"Изменен этот текст и статус.\",\r\n    \"status\": \"draft\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/api/posts/{{firstPostId}}/",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"posts",
+										"{{firstPostId}}",
+										""
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "delete_post // Not author",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Статус-код ответа должен быть 403\", function () {",
+											"    pm.expect(",
+											"        pm.response.status,",
+											"        \"Запрос незарегистрированного пользователя должен вернуть ответ со статус-кодом 403\"",
+											"    ).to.be.eql(\"Forbidden\");",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "noauth"
+								},
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{userToken}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"title\": \"Первый пост.\",\r\n    \"text\": \"Изменен этот текст и статус.\",\r\n    \"status\": \"draft\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/api/posts/{{fourPostId}}/",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"posts",
+										"{{fourPostId}}",
+										""
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "delete_comment // No auth",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Статус-код ответа должен быть 401\", function () {",
+											"    pm.expect(",
+											"        pm.response.status,",
+											"        \"Запрос незарегистрированного пользователя должен вернуть ответ со статус-кодом 401\"",
+											"    ).to.be.eql(\"Unauthorized\");",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "noauth"
+								},
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{userToken}}",
+										"type": "text",
+										"disabled": true
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"title\": \"Первый пост\",\r\n    \"text\": \"Изменен этот текст и статус.\",\r\n    \"status\": \"draft\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/api/posts/{{fivePostId}}/comments/{{firstCommentId}}/",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"posts",
+										"{{fivePostId}}",
+										"comments",
+										"{{firstCommentId}}",
+										""
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "delete_comment // Not author",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Статус-код ответа должен быть 403\", function () {",
+											"    pm.expect(",
+											"        pm.response.status,",
+											"        \"Запрос незарегистрированного пользователя должен вернуть ответ со статус-кодом 403\"",
+											"    ).to.be.eql(\"Forbidden\");",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "noauth"
+								},
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{userToken}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"title\": \"Первый пост.\",\r\n    \"text\": \"Изменен этот текст и статус.\",\r\n    \"status\": \"draft\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/api/posts/{{fivePostId}}/comments/{{secondCommentId}}/",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"posts",
+										"{{fivePostId}}",
+										"comments",
+										"{{secondCommentId}}",
+										""
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "delete_comment",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Статус-код ответа должен быть 204\", function () {",
+									"    pm.expect(",
+									"        pm.response.status,",
+									"        \"Запрос автора должен вернуть ответ со статус-кодом 204\"",
+									"    ).to.be.eql(\"No Content\");",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{userToken}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/posts/{{fivePostId}}/comments/{{firstCommentId}}/",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"posts",
+								"{{fivePostId}}",
+								"comments",
+								"{{firstCommentId}}",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete_first_post",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Статус-код ответа должен быть 204\", function () {",
+									"    pm.expect(",
+									"        pm.response.status,",
+									"        \"Запрос автора должен вернуть ответ со статус-кодом 204\"",
+									"    ).to.be.eql(\"No Content\");",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{userToken}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/posts/{{firstPostId}}/",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"posts",
+								"{{firstPostId}}",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete_second_post",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Статус-код ответа должен быть 204\", function () {",
+									"    pm.expect(",
+									"        pm.response.status,",
+									"        \"Запрос автора должен вернуть ответ со статус-кодом 204\"",
+									"    ).to.be.eql(\"No Content\");",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{userToken}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/posts/{{secondPostId}}/",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"posts",
+								"{{secondPostId}}",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete_third_post",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Статус-код ответа должен быть 204\", function () {",
+									"    pm.expect(",
+									"        pm.response.status,",
+									"        \"Запрос автора должен вернуть ответ со статус-кодом 204\"",
+									"    ).to.be.eql(\"No Content\");",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{userToken}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/posts/{{thirdPostId}}/",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"posts",
+								"{{thirdPostId}}",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete_four_post",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Статус-код ответа должен быть 204\", function () {",
+									"    pm.expect(",
+									"        pm.response.status,",
+									"        \"Запрос автора должен вернуть ответ со статус-кодом 204\"",
+									"    ).to.be.eql(\"No Content\");",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{secondUserToken}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/posts/{{fourPostId}}/",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"posts",
+								"{{fourPostId}}",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete_five_post",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Статус-код ответа должен быть 204\", function () {",
+									"    pm.expect(",
+									"        pm.response.status,",
+									"        \"Запрос автора должен вернуть ответ со статус-кодом 204\"",
+									"    ).to.be.eql(\"No Content\");",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{secondUserToken}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/posts/{{fivePostId}}/",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"posts",
+								"{{fivePostId}}",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete_six_post",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Статус-код ответа должен быть 204\", function () {",
+									"    pm.expect(",
+									"        pm.response.status,",
+									"        \"Запрос автора должен вернуть ответ со статус-кодом 204\"",
+									"    ).to.be.eql(\"No Content\");",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{secondUserToken}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/posts/{{sixPostId}}/",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"posts",
+								"{{sixPostId}}",
+								""
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "get_posts_list_after_delete // User",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Статус-код ответа должен быть 200\", function () {\r",
+							"    pm.expect(\r",
+							"        pm.response.status,\r",
+							"        \"Запрос зарегистрированного пользователя должен вернуть ответ со статус-кодом 200\"\r",
+							"    ).to.be.eql(\"OK\");\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Body matches string\", function () {\r",
+							"    pm.expect(pm.response.text()).to.not.include(pm.collectionVariables.get(\"firstPostId\"));\r",
+							"    pm.expect(pm.response.text()).to.not.include(pm.collectionVariables.get(\"secondPostId\"));\r",
+							"    pm.expect(pm.response.text()).to.not.include(pm.collectionVariables.get(\"thirdPostId\"));\r",
+							"    pm.expect(pm.response.text()).to.not.include(pm.collectionVariables.get(\"fourPostId\"));\r",
+							"    pm.expect(pm.response.text()).to.not.include(pm.collectionVariables.get(\"fivePostId\"));\r",
+							"    pm.expect(pm.response.text()).to.not.include(pm.collectionVariables.get(\"sixPostId\"));\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{userToken}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/api/posts/",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"api",
+						"posts",
+						""
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "baseUrl",
+			"value": "http://127.0.0.1:8000"
+		},
+		{
+			"key": "username",
+			"value": "\"user1\"",
+			"type": "string"
+		},
+		{
+			"key": "email",
+			"value": "\"user1@user.com\"",
+			"type": "string"
+		},
+		{
+			"key": "password",
+			"value": "\"Zxc159753\"",
+			"type": "string"
+		},
+		{
+			"key": "secondUserEmail",
+			"value": "\"user2@user.com\"",
+			"type": "string"
+		},
+		{
+			"key": "secondUserUsername",
+			"value": "\"user2\"",
+			"type": "string"
+		},
+		{
+			"key": "thirdUserEmail",
+			"value": "\"user3@user.com\"",
+			"type": "string"
+		},
+		{
+			"key": "thirdUserUsername",
+			"value": "\"user3\"",
+			"type": "string"
+		},
+		{
+			"key": "userId",
+			"value": ""
+		},
+		{
+			"key": "secondUserId",
+			"value": ""
+		},
+		{
+			"key": "thirdUserId",
+			"value": ""
+		},
+		{
+			"key": "userToken",
+			"value": ""
+		},
+		{
+			"key": "secondUserToken",
+			"value": ""
+		},
+		{
+			"key": "currentDate",
+			"value": ""
+		},
+		{
+			"key": "futureDate",
+			"value": ""
+		},
+		{
+			"key": "firstPostId",
+			"value": ""
+		},
+		{
+			"key": "secondPostId",
+			"value": ""
+		},
+		{
+			"key": "thirdPostId",
+			"value": ""
+		},
+		{
+			"key": "fourPostId",
+			"value": ""
+		},
+		{
+			"key": "firstCommentId",
+			"value": ""
+		},
+		{
+			"key": "fivePostId",
+			"value": ""
+		},
+		{
+			"key": "secondCommentId",
+			"value": ""
+		},
+		{
+			"key": "sixPostId",
+			"value": ""
+		}
+	]
+}

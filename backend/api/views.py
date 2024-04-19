@@ -20,8 +20,11 @@ class PostViewSet(ModelViewSet):
     filterset_class = PostFilter
 
     def get_queryset(self):
-        if self.request.user.is_staff:
-            return Post.objects.all()
+        if self.request.user.is_authenticated:
+            post = Post.objects.filter(
+                author__exact=self.request.user
+            ) | Post.objects.published_post()
+            return post
         return Post.objects.published_post()
 
     def perform_create(self, serializer):
@@ -48,7 +51,9 @@ class CommentViewSet(ModelViewSet):
     permission_classes = (IsAuthorOrAdminOrReadOnly,)
 
     def get_post(self):
-        return get_object_or_404(Post, id=self.kwargs.get('post_id'))
+        return get_object_or_404(
+            Post.objects.published_post(),
+            id=self.kwargs.get('post_id'))
 
     def get_queryset(self):
         return self.get_post().comments.all()
